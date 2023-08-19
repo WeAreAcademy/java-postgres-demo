@@ -3,6 +3,10 @@ import java.util.Random;
 
 public class DBDemo {
 
+
+    //Be careful never to store database connection information in the source code of your real projects.
+    //Keep code and configuration details separate by loading the connection details (URL and password) in from environment variables instead.
+
     private static final String DATABASE_URL = "jdbc:postgresql://localhost:5432/demos";
     private static final String USER = "academy";
     private static final String PASSWORD = "";
@@ -28,8 +32,12 @@ public class DBDemo {
     }
 
 
-    private static int generateRandomScore() {
-        return new Random().nextInt(0, 1000);
+    private static void printHiscoresFromResultSet(ResultSet resultSet) throws SQLException {
+        while (resultSet.next()) {
+            int score = resultSet.getInt("score");
+            String name = resultSet.getString("username");
+            System.out.println(score + " " + name);
+        }
     }
 
     private static void insertHiScore(String personName, int score, Connection connection) throws SQLException {
@@ -44,12 +52,8 @@ public class DBDemo {
         preparedStatement.executeUpdate();
     }
 
-    private static void printHiscoresFromResultSet(ResultSet resultSet) throws SQLException {
-        while (resultSet.next()) {
-            int score = resultSet.getInt("score");
-            String name = resultSet.getString("username");
-            System.out.println(score + " " + name);
-        }
+    private static int generateRandomScore() {
+        return new Random().nextInt(0, 1000);
     }
 
 
