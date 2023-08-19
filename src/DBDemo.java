@@ -3,18 +3,11 @@ import java.util.Random;
 
 public class DBDemo {
 
+    private static final String DATABASE_URL = getEnvVarOrFail("DATABASE_URL");//"jdbc:postgresql://localhost:5432/demos";
 
-    //Be careful never to store database connection information in the source code of your real projects.
-    //Keep code and configuration details separate by loading the connection details (URL and password) in from environment variables instead.
-
-    private static final String DATABASE_URL = "jdbc:postgresql://localhost:5432/demos";
-    private static final String USER = "academy";
-    private static final String PASSWORD = "";
-
-
-    public static void runDemo(){
+    public static void runDemo() {
         try {
-            Connection connection = DriverManager.getConnection(DATABASE_URL, USER, PASSWORD);
+            Connection connection = DriverManager.getConnection(DATABASE_URL);
             System.out.println("Connected to the PostgreSQL server successfully.");
             insertHiScore(RandomNameGenerator.generateRandomName(), generateRandomScore(), connection);
             getAndPrintHiScores(connection);
@@ -24,10 +17,17 @@ public class DBDemo {
             System.out.println(e.getMessage());
         }
     }
-
+    private static String getEnvVarOrFail(String key)  {
+        String result = System.getenv(key);
+        if (result != null) {
+            return result;
+        } else {
+            throw new RuntimeException("Missing required env var: " + key);
+        }
+    }
     private static void getAndPrintHiScores(Connection connection) throws SQLException {
         Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM hiscores limit 100");
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM hiscores order by score desc limit 100");
         printHiscoresFromResultSet(resultSet);
     }
 
@@ -36,7 +36,7 @@ public class DBDemo {
         while (resultSet.next()) {
             int score = resultSet.getInt("score");
             String name = resultSet.getString("username");
-            System.out.println(score + " " + name);
+            System.out.println(name + " scored " + score);
         }
     }
 
@@ -55,6 +55,4 @@ public class DBDemo {
     private static int generateRandomScore() {
         return new Random().nextInt(0, 1000);
     }
-
-
 }
