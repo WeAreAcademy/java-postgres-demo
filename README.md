@@ -15,3 +15,5 @@ or
 2. (option 2) Alternatively edit `FirstDBKata.iml` to have the correct path to, and filename for, the downloaded jar.
 
 In more advanced projects, you'll find a maven or gradle project configuration that takes care of downloading such dependencies for you.
+
+
