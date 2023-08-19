@@ -11,13 +11,11 @@ public class RandomNameGenerator {
     private static final Random RANDOM = new Random();
 
     public static String generateRandomName() {
-        return new StringBuilder()
-                .append(randomConsonant())
-                .append(randomVowel())
-                .append(randomConsonant())
-                .append(randomVowel())
-                .append(randomConsonant())
-                .toString();
+        return String.valueOf(randomConsonant()) +
+                randomVowel() +
+                randomConsonant() +
+                randomVowel() +
+                randomConsonant();
     }
 
     private static char randomVowel() {
