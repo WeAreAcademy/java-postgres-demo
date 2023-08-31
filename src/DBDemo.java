@@ -11,7 +11,7 @@ public class DBDemo {
             System.out.println("Connected to the PostgreSQL server successfully.");
             insertHiScore(RandomNameGenerator.generateRandomName(), generateRandomScore(), connection);
             getAndPrintHiScores(connection);
-
+            System.out.println("DBDemo finished successfully");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
